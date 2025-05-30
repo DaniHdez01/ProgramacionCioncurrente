@@ -2,14 +2,15 @@ package es.urjc.pc;
 
 import static es.urjc.etsii.code.concurrency.SimpleConcurrent.*;
 
+import es.urjc.etsii.code.concurrency.SimpleSemaphore;
+
 public class Ejercicio13 {   
     private static final int NUM_TRENES = 5;   
-    private static Semaphore semaforoTramoA; 
-    private static Semaphore semaforoTramoB = new Semaphore(1); 
-    private static Semaphore semaforoTramoC = new Semaphore(1); 
+    private static SimpleSemaphore semaforoTramoA; 
+    private static SimpleSemaphore semaforoTramoB ;  
+    private static SimpleSemaphore semaforoTramoC; 
 
     public static void tren(int numTren) {        
-        try{
             sleepRandom(500);   
             semaforoTramoA.acquire();
             recorrerTramoA(numTren);   
@@ -24,9 +25,7 @@ public class Ejercicio13 {
             recorrerTramoC(numTren); 
         
             semaforoTramoC.release();
-        } catch (InterruptedException e){
 
-        }
     }   
     
     private static void recorrerTramoA(int numTren) {   
@@ -49,9 +48,9 @@ public class Ejercicio13 {
         printlnI("Sale TC T" + numTren); 
     } 
     public static void main(String args[]) { 
-        semaforoTramoA = new Semaphore(1); 
-        semaforoTramoB = new Semaphore(1); 
-        semaforoTramoC = new Semaphore(1); 
+        semaforoTramoA = new SimpleSemaphore(1); 
+        semaforoTramoB = new SimpleSemaphore(1); 
+        semaforoTramoC = new SimpleSemaphore(1); 
         for (int i = 0; i < NUM_TRENES; i++) { 
             createThread("tren", i); 
         } 
